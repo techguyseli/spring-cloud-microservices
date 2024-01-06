@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableConfigurationProperties
 @EnableDiscoveryClient
-@EnableFeignClients("com.mcommandes.mcommandescom.mcommandes.mcommandes")
+@EnableFeignClients
 public class McommandesApplication {
 
 	public static void main(String[] args) {

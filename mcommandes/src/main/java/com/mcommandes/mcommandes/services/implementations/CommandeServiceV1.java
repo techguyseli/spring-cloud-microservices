@@ -13,10 +13,11 @@ import com.mcommandes.mcommandes.dao.ProductProxy;
 import com.mcommandes.mcommandes.exceptions.CommandeNotFoundException;
 import com.mcommandes.mcommandes.exceptions.ProductNotFoundException;
 import com.mcommandes.mcommandes.mappers.IMapper;
-import com.mcommandes.mcommandes.models.beans.ProductBean;
 import com.mcommandes.mcommandes.models.dto.CommandeRequest;
 import com.mcommandes.mcommandes.models.entities.Commande;
 import com.mcommandes.mcommandes.services.ICommandeService;
+
+import feign.FeignException.NotFound;
 
 @Service
 public class CommandeServiceV1 implements ICommandeService{
@@ -61,10 +62,11 @@ public class CommandeServiceV1 implements ICommandeService{
     public Commande add(CommandeRequest commandeRequest) throws ProductNotFoundException {
         Commande commande = mapper.dtoToObject(commandeRequest);
 
-        ProductBean product = productProxy.recupererUnProduit(commande.getId());
-
-        if (product == null)
+        try {
+            productProxy.recupererUnProduit(commande.getIdProduct());
+        } catch (NotFound ex) {
             throw new ProductNotFoundException();
+        }
 
         Commande savedCommand = commandeDAO.save(commande);
         return savedCommand;
@@ -75,10 +77,11 @@ public class CommandeServiceV1 implements ICommandeService{
         if (commandeDAO.findById(id).isEmpty())
             throw new CommandeNotFoundException(id);
 
-        ProductBean product = productProxy.recupererUnProduit(commandeRequest.idProduct());
-
-        if (product == null)
+        try {
+            productProxy.recupererUnProduit(commandeRequest.idProduct());
+        } catch (NotFound ex) {
             throw new ProductNotFoundException();
+        }
 
         Commande commande = mapper.dtoToObject(commandeRequest);
         commande.setId(id);
