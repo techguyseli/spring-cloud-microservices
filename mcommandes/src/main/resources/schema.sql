@@ -6,3 +6,7 @@ CREATE TABLE commande
     commande_date DATE NOT NULL,
     montant      NUMERIC NOT NULL
 );
+
+CREATE SEQUENCE COMMANDE_SEQ
+    START WITH 1
+    INCREMENT BY 50 ;
