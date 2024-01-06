@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.mcommandes.mcommandes.configurations.ApplicationPropertiesConfiguration;
 import com.mcommandes.mcommandes.dao.CommandeDAO;
+import com.mcommandes.mcommandes.dao.ProductProxy;
 import com.mcommandes.mcommandes.exceptions.CommandeNotFoundException;
+import com.mcommandes.mcommandes.exceptions.ProductNotFoundException;
 import com.mcommandes.mcommandes.mappers.IMapper;
+import com.mcommandes.mcommandes.models.beans.ProductBean;
 import com.mcommandes.mcommandes.models.dto.CommandeRequest;
 import com.mcommandes.mcommandes.models.entities.Commande;
 import com.mcommandes.mcommandes.services.ICommandeService;
@@ -20,6 +23,9 @@ public class CommandeServiceV1 implements ICommandeService{
 
     @Autowired
     private CommandeDAO commandeDAO;
+
+    @Autowired
+    private ProductProxy productProxy;
 
     @Autowired
     private ApplicationPropertiesConfiguration applicationPropertiesConfiguration;
@@ -52,16 +58,27 @@ public class CommandeServiceV1 implements ICommandeService{
     }
 
     @Override
-    public Commande add(CommandeRequest commandeRequest) {
+    public Commande add(CommandeRequest commandeRequest) throws ProductNotFoundException {
         Commande commande = mapper.dtoToObject(commandeRequest);
+
+        ProductBean product = productProxy.recupererUnProduit(commande.getId());
+
+        if (product == null)
+            throw new ProductNotFoundException();
+
         Commande savedCommand = commandeDAO.save(commande);
         return savedCommand;
     }
 
     @Override
-    public Commande update(Long id, CommandeRequest commandeRequest) throws CommandeNotFoundException {
+    public Commande update(Long id, CommandeRequest commandeRequest) throws CommandeNotFoundException, ProductNotFoundException {
         if (commandeDAO.findById(id).isEmpty())
             throw new CommandeNotFoundException(id);
+
+        ProductBean product = productProxy.recupererUnProduit(commandeRequest.idProduct());
+
+        if (product == null)
+            throw new ProductNotFoundException();
 
         Commande commande = mapper.dtoToObject(commandeRequest);
         commande.setId(id);

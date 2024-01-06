@@ -25,5 +25,6 @@ public class Commande {
     Integer quantite;
     LocalDate commandeDate;
     Double montant;
+    Long idProduct;
     
 }

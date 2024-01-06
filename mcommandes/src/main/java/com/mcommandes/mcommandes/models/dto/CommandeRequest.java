@@ -6,7 +6,8 @@ public record CommandeRequest (
     String description,
     Integer quantite,
     LocalDate date,
-    Double montant
+    Double montant,
+    Long idProduct
 ){
     
 }

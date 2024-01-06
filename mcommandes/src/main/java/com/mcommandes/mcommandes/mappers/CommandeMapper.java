@@ -15,7 +15,8 @@ public class CommandeMapper implements IMapper<Commande, CommandeRequest>{
             dto.description(),
             dto.quantite(), 
             dto.date(), 
-            dto.montant());
+            dto.montant(),
+            dto.idProduct());
     }
 
     @Override
@@ -24,6 +25,7 @@ public class CommandeMapper implements IMapper<Commande, CommandeRequest>{
             object.getDescription(), 
             object.getQuantite(), 
             object.getCommandeDate(), 
-            object.getMontant());
+            object.getMontant(),
+            object.getIdProduct());
     }
 }
