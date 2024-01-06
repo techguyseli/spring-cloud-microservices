@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mcommandes.mcommandes.dao.CommandeDAO;
 import com.mcommandes.mcommandes.exceptions.CommandeNotFoundException;
+import com.mcommandes.mcommandes.exceptions.ProductNotFoundException;
 import com.mcommandes.mcommandes.models.dto.CommandeRequest;
 import com.mcommandes.mcommandes.models.entities.Commande;
 import com.mcommandes.mcommandes.services.ICommandeService;
@@ -48,7 +49,7 @@ public class CommandeController implements HealthIndicator{
     }
 
     @PostMapping
-    public ResponseEntity<Commande> addCommande(@RequestBody CommandeRequest commande){
+    public ResponseEntity<Commande> addCommande(@RequestBody CommandeRequest commande) throws ProductNotFoundException{
         Commande newCommande = commandeService.add(commande);
         return new ResponseEntity<>(newCommande, HttpStatus.CREATED);
     }
@@ -57,7 +58,7 @@ public class CommandeController implements HealthIndicator{
     public ResponseEntity<Commande> updateCommande(
         @PathVariable Long id, 
         @RequestBody CommandeRequest commande
-        ) throws CommandeNotFoundException {
+        ) throws CommandeNotFoundException, ProductNotFoundException {
 
         Commande newCommande = commandeService.update(id, commande);
         Optional<Commande> newCommandeOptional = Optional.of(newCommande);
