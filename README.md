@@ -47,3 +47,66 @@ export JAVA_HOME=/your/java/17/home/path
 mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dserver.port=9002'
 ```
 And that's it, you're ready to start testing the microservices.
+# Testing the microservices
+## Products microservice demonstration
+- Post example (id is 9):
+```bash
+curl -v -X POST --json '{"titre":"new product", "description":"this is a newly added product", "image":"/sample/image/image.png", "prix": 200.0}' http://localhost:9103/microservice-produits/products
+```
+- Put example (changed titre of id 9):
+```bash
+curl -v -X POST --json '{"titre":"updated product", "description":"this is a newly added product", "image":"/sample/image/image.png", "prix": 200.0}' http://localhost:9103/microservice-produits/products/9
+```
+- Delete id 9:
+```bash
+curl -v -X DELETE http://localhost:9103/microservice-produits/products/9
+```
+- Get deleted id 9:
+```bash
+curl -v -X GET http://localhost:9103/microservice-produits/products/9
+```
+## Orders microservice demonstration
+- Post example (id is 1) in the last 10 days:
+```bash
+curl -v -X POST --json '{"description":"new order", "quantite":3, "date":"2024-01-08", "montant": 200.0, "idProduct":3}' http://localhost:9103/microservice-commandes/commandes
+```
+- Post example, error: product doesn't exist:
+```bash
+curl -v -X POST --json '{"description":"new order", "quantite":3, "date":"2024-01-08", "montant": 200.0, "idProduct":66}' http://localhost:9103/microservice-commandes/commandes
+```
+- Get the orders and it should be there since it fits the time frame which is 10:
+```bash
+curl -v -X GET http://localhost:9103/microservice-commandes/commandes
+```
+- Put example (changed date to before 10 days):
+```bash
+curl -v -X PUT --json '{"description":"new order", "quantite":3, "date":"2023-12-08", "montant": 200.0, "idProduct":3}' http://localhost:9103/microservice-commandes/commandes/1
+```
+- Get the orders and it should not be there:
+```bash
+curl -v -X GET http://localhost:9103/microservice-commandes/commandes
+```
+- Check that the order actually exists:
+```bash
+curl -v -X GET http://localhost:9103/microservice-commandes/commandes/1
+```
+- Change the property of days to show 60 days before, then execute the following:
+```bash
+git add . ; git commit -m "changed commandes properties" ; git push
+```
+- Refresh the microservice config:
+```bash
+curl -v -X POST http://localhost:9002/actuator/refresh
+```
+- It shows the order again:
+```bash
+curl -v -X GET http://localhost:9103/microservice-commandes/commandes
+```
+- Delete id 1:
+```bash
+curl -v -X DELETE http://localhost:9103/microservice-commandes/commandes/1
+```
+- Get deleted id 1:
+```bash
+curl -v -X GET http://localhost:9103/microservice-commandes/commandes/1
+```

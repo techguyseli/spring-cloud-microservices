@@ -21,9 +21,9 @@ import lombok.ToString;
 public class Commande {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String description;
+    String commandeDescription;
     Integer quantite;
     LocalDate commandeDate;
     Double montant;

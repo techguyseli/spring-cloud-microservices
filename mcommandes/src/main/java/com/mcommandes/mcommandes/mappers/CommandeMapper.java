@@ -22,7 +22,7 @@ public class CommandeMapper implements IMapper<Commande, CommandeRequest>{
     @Override
     public CommandeRequest objectToDto(Commande object) {
         return new CommandeRequest(
-            object.getDescription(), 
+            object.getCommandeDescription(), 
             object.getQuantite(), 
             object.getCommandeDate(), 
             object.getMontant(),
