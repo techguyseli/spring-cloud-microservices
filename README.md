@@ -55,7 +55,7 @@ curl -v -X POST --json '{"titre":"new product", "description":"this is a newly a
 ```
 - Put example (changed titre of id 9):
 ```bash
-curl -v -X POST --json '{"titre":"updated product", "description":"this is a newly added product", "image":"/sample/image/image.png", "prix": 200.0}' http://localhost:9103/microservice-produits/products/9
+curl -v -X PUT --json '{"titre":"updated product", "description":"this is a newly added product", "image":"/sample/image/image.png", "prix": 200.0}' http://localhost:9103/microservice-produits/products/9
 ```
 - Delete id 9:
 ```bash
