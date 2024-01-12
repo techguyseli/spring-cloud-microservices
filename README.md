@@ -57,6 +57,10 @@ curl -v -X POST --json '{"titre":"new product", "description":"this is a newly a
 ```bash
 curl -v -X PUT --json '{"titre":"updated product", "description":"this is a newly added product", "image":"/sample/image/image.png", "prix": 200.0}' http://localhost:9103/microservice-produits/products/9
 ```
+- Get id 9:
+```bash
+curl -v -X GET http://localhost:9103/microservice-produits/products/9
+```
 - Delete id 9:
 ```bash
 curl -v -X DELETE http://localhost:9103/microservice-produits/products/9
