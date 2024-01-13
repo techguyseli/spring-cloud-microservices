@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mcommandes.mcommandes.models.beans.ProductBean;
 
-@FeignClient(name = "microservice-produits", url = "localhost:9103/microservice-produits")
+@FeignClient(name = "microservice-produits", url = "localhost:9001")
 public interface ProductProxy {
 
     @GetMapping("/products/{id}")

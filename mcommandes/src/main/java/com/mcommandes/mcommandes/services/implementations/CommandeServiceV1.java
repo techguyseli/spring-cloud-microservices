@@ -42,8 +42,7 @@ public class CommandeServiceV1 implements ICommandeService{
         commandes.removeIf(cmd ->
                 cmd.getCommandeDate()
                 .isBefore(
-                    LocalDate.now()
-                    .minusDays(numOfDays)));
+                    LocalDate.now().minusDays(numOfDays)));
 
         return commandes;
     }
